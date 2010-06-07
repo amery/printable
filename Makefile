@@ -1,6 +1,6 @@
 CC = gcc
 
-CFLAGS = -W -Wall
+CFLAGS = -W -Wall -std=c99
 LDFLAGS =
 
 CFLAGS += -O3
