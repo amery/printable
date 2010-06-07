@@ -1,14 +1,16 @@
 #include <unistd.h>
+#include <getopt.h>
 #include <errno.h>
 
 #include <stdio.h>
+#include <string.h>
 
 #include "printf_encode.h"
 
-static inline void write_all(int fd, const char *string, ssize_t len)
+static inline void stdout_all(const char *string, ssize_t len)
 {
 	while (len > 0) {
-		ssize_t l = write(fd, string, len);
+		ssize_t l = write(STDOUT_FILENO, string, len);
 		if (l == len)
 			return;
 		else if (l > 0) {
@@ -21,18 +23,20 @@ static inline void write_all(int fd, const char *string, ssize_t len)
 	}
 }
 
-static inline void print_encoded(int fd, const char *string, size_t len)
+typedef size_t (*encoder) (uint8_t c, char *buf);
+
+static void print_encoded(const char *string, size_t len, encoder f)
 {
 	char buf[] = "?????"; /* max \0377 */
 	while (len > 0) {
 		uint8_t c = *string++ & 0xff; len--;
-		size_t l = printf_encode(c, buf);
+		size_t l = f(c, buf);
 
-		write_all(fd, buf, l);
+		stdout_all(buf, l);
 	}
 }
 
-int main(int argc, char **argv)
+static inline void print_stdin_encoded(encoder f)
 {
 	char buffer[4096];
 	ssize_t l;
@@ -40,13 +44,39 @@ int main(int argc, char **argv)
 	/* zero indicates EOF */
 	while ((l = read(STDIN_FILENO, buffer, sizeof(buffer))) != 0) {
 		if (l > 0) {
-			print_encoded(STDOUT_FILENO, buffer, l);
+			print_encoded(buffer, l, f);
 		} else if (errno == EAGAIN || errno == EINTR) {
 			continue;
 		} else {
-			perror("read(stdin)");
-			return -1;
+			perror("read");
+			_exit(errno);
 		}
+	}
+}
+
+int main(int argc, char **argv)
+{
+	int opt;
+	encoder f = printf_encode;
+
+	while ((opt = getopt(argc, argv, "")) != -1) {
+		switch (opt) {
+		default:
+			fprintf(stderr,
+				 "Usage: %s [<string> ...]\n\n"
+				 "(stdin is used if no string is given)\n",
+				 argv[0]);
+			 return(1);
+		}
+	}
+
+	if (optind < argc) { /* by argument */
+		for(int i = optind; i < argc; i++) {
+			print_encoded(argv[i], strlen(argv[i]), f);
+			stdout_all("\n",1);
+		}
+	} else {
+		print_stdin_encoded(f);
 	}
 	return 0;
 }
