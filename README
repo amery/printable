@@ -1,0 +1,8 @@
+printable
+Alejandro Mery <amery@geeks.cl>
+
+A tool to convert stdin into printable 7-bit clean strings
+
+Note: This is also an experiment on using Ragel[1]
+
+[1] http://www.complang.org/ragel/
