@@ -6,6 +6,7 @@
 #include <string.h>
 
 #include "printf_encode.h"
+#include "echo_encode.h"
 
 static inline void stdout_all(const char *string, ssize_t len)
 {
@@ -59,11 +60,12 @@ int main(int argc, char **argv)
 	int opt;
 	encoder f = printf_encode;
 
-	while ((opt = getopt(argc, argv, "")) != -1) {
+	while ((opt = getopt(argc, argv, "e")) != -1) {
 		switch (opt) {
+		case 'e': f = echo_encode; break;
 		default:
 			fprintf(stderr,
-				 "Usage: %s [<string> ...]\n\n"
+				 "Usage: %s [-e] [<strings> ...]\n\n"
 				 "(stdin is used if no string is given)\n",
 				 argv[0]);
 			 return(1);
