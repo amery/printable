@@ -1,0 +1,3 @@
+*.o
+printable
+printf_encoded.c
