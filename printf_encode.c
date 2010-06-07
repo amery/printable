@@ -1,5 +1,4 @@
-#include <unistd.h>
-#include <stdint.h>
+#include "printf_encode.h"
 
 size_t printf_encode(uint8_t c, char *out)
 {
@@ -16,36 +15,20 @@ size_t printf_encode(uint8_t c, char *out)
 		static const char e[] = "abtnvfr";
 		c = e[c - '\a'];
 		goto escape2;
-	} else { /* not printable, octal encoded as \num */
-		char o[3] = {
-			'0' + ((c & (0x07 << 6)) >> 6),
-			'0' + ((c & (0x07 << 3)) >> 3),
-			'0' + ((c & (0x07 << 0)) >> 0)
-		};
+	} else if (c == 0) {
+		c = '0';
+		goto escape2;
+	} else { /* not printable, hexa encoded */
+		static const char hexa[] = "0123456789abcdef";
 
 		if (out) {
 			out[0] = '\\';
+			out[1] = 'x';
+			out[2] = hexa[(c & (0x0f << 4)) >> 4];
+			out[3] = hexa[c & 0x0f];
 		}
 
-		if (o[0] != '0') { /* 3 digit */
-			if (out) {
-				out[1] = o[0];
-				out[2] = o[1];
-				out[3] = o[2];
-			}
-			return 4;
-		} else if (o[1] != '0') { /* 2 digit */
-			if (out) {
-				out[1] = o[1];
-				out[2] = o[2];
-			}
-			return 3;
-		} else { /* 1 digit */
-			if (out) {
-				out[1] = o[2];
-			}
-			return 2;
-		}
+		return 4;
 	}
 escape2:
 	if (out) { out[0] = '\\'; out[1] = c; }
