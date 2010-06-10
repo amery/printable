@@ -7,6 +7,7 @@
 
 #include "printf_encode.h"
 #include "echo_encode.h"
+#include "url_encode.h"
 
 static inline void stdout_all(const char *string, ssize_t len)
 {
@@ -60,13 +61,18 @@ int main(int argc, char **argv)
 	int opt;
 	encoder f = printf_encode;
 
-	while ((opt = getopt(argc, argv, "e")) != -1) {
+	while ((opt = getopt(argc, argv, "peu")) != -1) {
 		switch (opt) {
+		case 'p': f = printf_encode; break;
 		case 'e': f = echo_encode; break;
+		case 'u': f = url_encode; break;
 		default:
 			fprintf(stderr,
-				 "Usage: %s [-e] [<strings> ...]\n\n"
-				 "(stdin is used if no string is given)\n",
+				 "Usage: %s [-peu] [<strings> ...]\n\n"
+				 "  -p   encode for printf()\n"
+				 "  -e   encode for `echo`\n"
+				 "  -u   encode for the querystring of a url\n"
+				 "\n(stdin is used if no string is given)\n",
 				 argv[0]);
 			 return(1);
 		}
