@@ -3,6 +3,7 @@
  * Copyright (c) 2010, Alejandro Mery <amery@geeks.cl>
  * All rights reserved. See COPYING for details.
  ***/
+
 #include "printf_encode.h"
 
 #define hexa "0123456789abcdef"

@@ -3,6 +3,7 @@
  * Copyright (c) 2010, Alejandro Mery <amery@geeks.cl>
  * All rights reserved. See COPYING for details.
  ***/
+
 #include <unistd.h>
 #include <getopt.h>
 #include <errno.h>
