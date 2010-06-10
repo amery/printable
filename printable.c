@@ -15,6 +15,10 @@
 #include "echo_encode.h"
 #include "url_encode.h"
 
+#define VERSION "0.1"
+#define HOME	"http://github.com/amery/printable"
+#define DESCRIPTION "A simple command line encoder"
+
 static inline void stdout_all(const char *string, ssize_t len)
 {
 	while (len > 0) {
@@ -67,14 +71,22 @@ int main(int argc, char **argv)
 	int opt;
 	encoder f = printf_encode;
 
-	while ((opt = getopt(argc, argv, "peu")) != -1) {
+	while ((opt = getopt(argc, argv, "?Vpeu")) != -1) {
 		switch (opt) {
+		case 'V':
+			fputs("printable v" VERSION " <" HOME ">\n"
+			      DESCRIPTION "\n"
+			      "Copyright (c) 2010, Alejandro Mery <amery@geeks.cl>\n",
+			      stderr);
+			return 0;
 		case 'p': f = printf_encode; break;
 		case 'e': f = echo_encode; break;
 		case 'u': f = url_encode; break;
 		default:
 			fprintf(stderr,
-				 "Usage: %s [-peu] [<strings> ...]\n\n"
+				"printable v" VERSION "\n" DESCRIPTION "\n\n"
+				 "Usage: %s [-V] [-peu] [<strings> ...]\n\n"
+				 "  -V   print version and exit\n"
 				 "  -p   encode for printf()\n"
 				 "  -e   encode for `echo`\n"
 				 "  -u   encode for the querystring of a url\n"
