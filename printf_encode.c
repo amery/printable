@@ -1,5 +1,7 @@
 #include "printf_encode.h"
 
+#define hexa "0123456789abcdef"
+
 size_t printf_encode(uint8_t c, char *out)
 {
 	if (c>0x1f && c<0x7f) { /* ASCII printable characters */
@@ -19,8 +21,6 @@ size_t printf_encode(uint8_t c, char *out)
 		c = '0';
 		goto escape2;
 	} else { /* not printable, hexa encoded */
-		static const char hexa[] = "0123456789abcdef";
-
 		if (out) {
 			out[0] = '\\';
 			out[1] = 'x';
