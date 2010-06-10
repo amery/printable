@@ -2,7 +2,7 @@
 #
 # Copyright (c) 2010, Alejandro Mery <amery@geeks.cl>
 # All rights reserved. See COPYING for details.
-#
+
 CC = gcc
 
 CFLAGS = -W -Wall -std=c99
@@ -18,7 +18,10 @@ SRCS = $(wildcard *.c)
 HDRS = $(wildcard *.h)
 OBJS = $(patsubst %.c,%.o,$(SRCS))
 
-.PHONY: all clean
+DESTDIR =
+BINDIR  = /usr/local/bin
+
+.PHONY: all clean install
 
 all: $(APP)
 
@@ -26,6 +29,10 @@ $(APP): $(OBJS)
 
 clean:
 	rm -vf $(APP) *.o *~
+
+install:
+	cp $(APP) $(DESTDIR)$(BINDIR)/
+	chmod 0755 $(DESTDIR)$(BINDIR)/$(APP)
 
 .gitignore: Makefile
 	echo '*.o' > $@~
