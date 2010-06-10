@@ -2,3 +2,6 @@ printable
 Alejandro Mery <amery@geeks.cl>
 
 A tool to convert stdin into printable 7-bit clean strings
+
+This tool is distributed under the terms of the new BSD license. See
+the COPYING file for details.

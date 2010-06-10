@@ -1,3 +1,8 @@
+/* this file belongs to `printable` http://github.com/amery/printable
+ *
+ * Copyright (c) 2010, Alejandro Mery <amery@geeks.cl>
+ * All rights reserved. See COPYING for details.
+ ***/
 #include "echo_encode.h"
 
 size_t echo_encode(uint8_t c, char *out)
