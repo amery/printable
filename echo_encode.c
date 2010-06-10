@@ -6,9 +6,11 @@
 
 #include "echo_encode.h"
 
+#define CEC "abtnvfr"
+
 size_t echo_encode(uint8_t c, char *out)
 {
-	if (c>0x1f && c<0x7f) { /* ASCII printable characters */
+	if (c > 0x1f && c < 0x7f) { /* ASCII printable characters */
 		switch(c) {
 		case '"':
 		case '\'':
@@ -19,8 +21,7 @@ size_t echo_encode(uint8_t c, char *out)
 			return 1;
 		}
 	} else if (c >= '\a' && c <= '\r') {  /* C Character Escape Codes */
-		static const char e[] = "abtnvfr";
-		c = e[c - '\a'];
+		c = CEC[c - '\a'];
 		goto escape2;
 	} else { /* not printable, octal encoded as \0num */
 		char o[3] = {

@@ -10,8 +10,8 @@
 
 size_t url_encode(uint8_t c, char *out)
 {
-	if (c>0x1f && c<0x7f) { /* ASCII printable characters */
-		switch(c) {
+	if (c > 0x1f && c < 0x7f) { /* ASCII printable characters */
+		switch (c) {
 		case '$': /* reserved */
 		case '&':
 		case '+':
