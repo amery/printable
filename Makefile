@@ -21,9 +21,11 @@ OBJS = $(patsubst %.c,%.o,$(SRCS))
 DESTDIR =
 BINDIR  = /usr/local/bin
 
-.PHONY: all clean install
+.PHONY: all gen clean install
 
 all: $(APP)
+
+gen: .gitignore
 
 $(APP): $(OBJS)
 
