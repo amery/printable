@@ -9,7 +9,7 @@
 
 #define CEC "abtnvfr"
 
-size_t echo_encode(uint8_t c, uint8_t UNUSED(peek), char *out, unsigned flags)
+size_t echo_encode(uint8_t c, uint8_t peek, char *out, unsigned flags)
 {
 	if (c == '\n' && flags & SKIP_NL)
 		goto raw;
@@ -29,6 +29,8 @@ raw:
 		c = CEC[c - '\a'];
 		goto escape2;
 	} else { /* not printable, octal encoded as \0num */
+		int nc;
+
 		char o[3] = {
 			'0' + ((c & (0x07 << 6)) >> 6),
 			'0' + ((c & (0x07 << 3)) >> 3),
@@ -40,26 +42,24 @@ raw:
 			out[1] = '0';
 		}
 
-		if (o[0] != '0') { /* 3 digit */
-			if (out) {
-				out[2] = o[0];
-				out[3] = o[1];
-				out[4] = o[2];
-			}
-			return 5;
-		} else if (o[1] != '0') { /* 2 digit */
-			if (out) {
-				out[2] = o[1];
-				out[3] = o[2];
-			}
-			return 4;
-		} else if (o[2] != '0') { /* 1 digit */
-			if (out) {
-				out[2] = o[2];
-			}
-			return 3;
+		if (peek >= '0' && peek <= '9')
+			nc = 5;
+		else if (o[0] != '0')
+			nc = 5;
+		else if (o[1] != '0')
+			nc = 4;
+		else if (o[2] != '0')
+			nc = 3;
+		else
+			nc = 2;
+
+		if (out) {
+			register int i, j;
+			for (i=2, j=5-nc; i < nc; i++, j++)
+				out[i] = o[j];
 		}
-		return 2;
+
+		return nc;
 	}
 escape2:
 	if (out) { out[0] = '\\'; out[1] = c; }
