@@ -38,3 +38,8 @@ install:
 	echo '*.o' > $@~
 	echo $(APP) >> $@~
 	mv $@~ $@
+
+Makefile.deps: Makefile $(SRCS) $(HDRS)
+	$(CC) $(CFLAGS) -MM $(SRCS) > $@
+
+include Makefile.deps
