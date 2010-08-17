@@ -10,14 +10,18 @@
 #define hexa "0123456789abcdef"
 #define CEC "abtnvfr"
 
-size_t printf_encode(uint8_t c, char *out, unsigned UNUSED(flags))
+size_t printf_encode(uint8_t c, char *out, unsigned flags)
 {
+	if (c == '\n' && flags & SKIP_NL)
+		goto raw;
+
 	if (c > 0x1f && c < 0x7f) { /* ASCII printable characters */
 		switch(c) {
 		case '"':
 		case '\\':
 			goto escape2;
 		default:
+raw:
 			if (out) { out[0] = c; }
 			return 1;
 		}
