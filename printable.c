@@ -33,7 +33,7 @@ static inline void stdout_all(const char *string, ssize_t len)
 	}
 }
 
-typedef size_t (*encoder) (uint8_t c, char *buf, unsigned flags);
+typedef size_t (*encoder) (uint8_t c, uint8_t peek, char *out, unsigned flags);
 
 static void print_encoded(const char *string, size_t len, encoder f,
 			  unsigned flags)
@@ -41,7 +41,7 @@ static void print_encoded(const char *string, size_t len, encoder f,
 	char buf[] = "?????"; /* max \0377 */
 	while (len > 0) {
 		uint8_t c = *string++ & 0xff; len--;
-		size_t l = f(c, buf, flags);
+		size_t l = f(c, *string & 0xff, buf, flags);
 
 		stdout_all(buf, l);
 	}

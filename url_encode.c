@@ -9,7 +9,7 @@
 
 #define hex "0123456789ABCDEF"
 
-size_t url_encode(uint8_t c, char *out, unsigned flags)
+size_t url_encode(uint8_t c, uint8_t UNUSED(peek), char *out, unsigned flags)
 {
 	if (c == '\n' && flags & SKIP_NL)
 		goto raw;

@@ -10,6 +10,6 @@
 #include <stddef.h>
 #include <stdint.h>
 
-size_t printf_encode(uint8_t c, char *out, unsigned flags);
+size_t printf_encode(uint8_t c, uint8_t peek, char *out, unsigned flags);
 
 #endif
