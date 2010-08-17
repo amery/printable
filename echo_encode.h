@@ -10,6 +10,6 @@
 #include <stddef.h>
 #include <stdint.h>
 
-size_t echo_encode(uint8_t c, char *out);
+size_t echo_encode(uint8_t c, char *out, unsigned flags);
 
 #endif

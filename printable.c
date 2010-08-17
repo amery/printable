@@ -35,20 +35,21 @@ static inline void stdout_all(const char *string, ssize_t len)
 	}
 }
 
-typedef size_t (*encoder) (uint8_t c, char *buf);
+typedef size_t (*encoder) (uint8_t c, char *buf, unsigned flags);
 
-static void print_encoded(const char *string, size_t len, encoder f)
+static void print_encoded(const char *string, size_t len, encoder f,
+			  unsigned flags)
 {
 	char buf[] = "?????"; /* max \0377 */
 	while (len > 0) {
 		uint8_t c = *string++ & 0xff; len--;
-		size_t l = f(c, buf);
+		size_t l = f(c, buf, flags);
 
 		stdout_all(buf, l);
 	}
 }
 
-static inline void print_stdin_encoded(encoder f)
+static inline void print_stdin_encoded(encoder f, unsigned flags)
 {
 	char buffer[4096];
 	ssize_t l;
@@ -56,7 +57,7 @@ static inline void print_stdin_encoded(encoder f)
 	/* zero indicates EOF */
 	while ((l = read(STDIN_FILENO, buffer, sizeof(buffer))) != 0) {
 		if (l > 0) {
-			print_encoded(buffer, l, f);
+			print_encoded(buffer, l, f, flags);
 		} else if (errno == EAGAIN || errno == EINTR) {
 			continue;
 		} else {
@@ -98,11 +99,11 @@ int main(int argc, char **argv)
 
 	if (optind < argc) { /* by argument */
 		for(int i = optind; i < argc; i++) {
-			print_encoded(argv[i], strlen(argv[i]), f);
+			print_encoded(argv[i], strlen(argv[i]), f, 0);
 			stdout_all("\n",1);
 		}
 	} else {
-		print_stdin_encoded(f);
+		print_stdin_encoded(f, 0);
 	}
 	return 0;
 }

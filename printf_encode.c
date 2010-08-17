@@ -9,7 +9,7 @@
 #define hexa "0123456789abcdef"
 #define CEC "abtnvfr"
 
-size_t printf_encode(uint8_t c, char *out)
+size_t printf_encode(uint8_t c, char *out, unsigned flags)
 {
 	if (c > 0x1f && c < 0x7f) { /* ASCII printable characters */
 		switch(c) {

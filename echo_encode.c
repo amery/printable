@@ -8,7 +8,7 @@
 
 #define CEC "abtnvfr"
 
-size_t echo_encode(uint8_t c, char *out)
+size_t echo_encode(uint8_t c, char *out, unsigned flags)
 {
 	if (c > 0x1f && c < 0x7f) { /* ASCII printable characters */
 		switch(c) {
