@@ -9,8 +9,11 @@
 
 #define hex "0123456789ABCDEF"
 
-size_t url_encode(uint8_t c, char *out, unsigned UNUSED(flags))
+size_t url_encode(uint8_t c, char *out, unsigned flags)
 {
+	if (c == '\n' && flags & SKIP_NL)
+		goto raw;
+
 	if (c > 0x1f && c < 0x7f) { /* ASCII printable characters */
 		switch (c) {
 		case '$': /* reserved */
@@ -39,7 +42,7 @@ size_t url_encode(uint8_t c, char *out, unsigned UNUSED(flags))
 		case '`':
 			break; /* encode */
 		default:
-			/* raw */
+raw:			/* raw */
 			if (out) { out[0] = c; }
 			return 1;
 		}
