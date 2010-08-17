@@ -1,4 +1,4 @@
-printable v0.1
+printable v0.3
 Alejandro Mery <amery@geeks.cl>
 
 A tool to convert stdin into printable 7-bit clean strings
