@@ -35,9 +35,9 @@ install:
 	chmod 0755 $(DESTDIR)$(BINDIR)/$(APP)
 
 .gitignore: Makefile
-	echo '*.o' > $@~
-	echo $(APP) >> $@~
-	mv $@~ $@
+	for x in '*.o' $(APP) Makefile.deps; do \
+	echo "$$x"; \
+	done > $@
 
 Makefile.deps: Makefile $(SRCS) $(HDRS)
 	$(CC) $(CFLAGS) -MM $(SRCS) > $@
