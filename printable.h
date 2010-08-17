@@ -14,4 +14,8 @@
 #	define UNUSED(x) x
 #endif
 
+enum {
+	SKIP_NL = 1 << 0,
+};
+
 #endif
