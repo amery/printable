@@ -18,4 +18,8 @@ enum {
 	SKIP_NL = 1 << 0,
 };
 
+#define VERSION "0.1"
+#define HOME	"http://github.com/amery/printable"
+#define DESCRIPTION "A simple command line encoder"
+
 #endif

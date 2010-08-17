@@ -17,10 +17,6 @@
 #include "echo_encode.h"
 #include "url_encode.h"
 
-#define VERSION "0.1"
-#define HOME	"http://github.com/amery/printable"
-#define DESCRIPTION "A simple command line encoder"
-
 static inline void stdout_all(const char *string, ssize_t len)
 {
 	while (len > 0) {
