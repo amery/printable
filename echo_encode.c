@@ -4,11 +4,12 @@
  * All rights reserved. See COPYING for details.
  ***/
 
+#include "printable.h"
 #include "echo_encode.h"
 
 #define CEC "abtnvfr"
 
-size_t echo_encode(uint8_t c, char *out, unsigned flags)
+size_t echo_encode(uint8_t c, char *out, unsigned UNUSED(flags))
 {
 	if (c > 0x1f && c < 0x7f) { /* ASCII printable characters */
 		switch(c) {

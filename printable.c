@@ -11,6 +11,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "printable.h"
+
 #include "printf_encode.h"
 #include "echo_encode.h"
 #include "url_encode.h"

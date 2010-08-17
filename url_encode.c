@@ -4,11 +4,12 @@
  * All rights reserved. See COPYING for details.
  ***/
 
+#include "printable.h"
 #include "url_encode.h"
 
 #define hex "0123456789ABCDEF"
 
-size_t url_encode(uint8_t c, char *out, unsigned flags)
+size_t url_encode(uint8_t c, char *out, unsigned UNUSED(flags))
 {
 	if (c > 0x1f && c < 0x7f) { /* ASCII printable characters */
 		switch (c) {
